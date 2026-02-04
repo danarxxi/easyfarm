@@ -134,17 +134,17 @@ EasyFarm은 Arduino 센서 모듈과 Android 모바일 앱을 연동하여 **실
 
 ### 식물 정보 차트
 <p align="center">
-  <img src="6조 소스코드/EasyFarm_Android/res/drawable-v24/info_chart.jpg" width="300" alt="식물 온습도 차트"/>
+  <img src="source-code/EasyFarm_Android/res/drawable-v24/info_chart.jpg" width="300" alt="식물 온습도 차트"/>
 </p>
 
 ### 계절별 습도 정보
 <p align="center">
-  <img src="6조 소스코드/EasyFarm_Android/res/drawable-v24/info_plant.jpg" width="300" alt="계절별 습도"/>
+  <img src="source-code/EasyFarm_Android/res/drawable-v24/info_plant.jpg" width="300" alt="계절별 습도"/>
 </p>
 
 ### 식물별 적정 습도
 <p align="center">
-  <img src="6조 소스코드/EasyFarm_Android/res/drawable-v24/info_hum.jpg" width="300" alt="식물별 적정습도"/>
+  <img src="source-code/EasyFarm_Android/res/drawable-v24/info_hum.jpg" width="300" alt="식물별 적정습도"/>
 </p>
 
 ---
@@ -228,17 +228,6 @@ GET http://api.pushingbox.com/pushingbox?devid={DEVICE_ID}
 ## 개발 기간
 
 **2022.08.29 ~ 2022.10.31**
-
----
-
-## 프로젝트 문서
-
-| 문서명 | 설명 |
-|:------:|:-----|
-| [완료 발표자료](../6조%20자료/6조%20종합프로젝트%20완료발표.pptx) | 최종 발표 PPT |
-| [완료 보고서](../6조%20자료/6조%20종합프로젝트%20완료보고서.docx) | 최종 보고서 |
-| [설계서](../6조%20자료/종합프로젝트(설계서v1.0).hwp) | 시스템 설계 문서 |
-| [제안서](../6조%20자료/종합프로젝트제안서_6조_이지팜.pptx) | 프로젝트 제안서 |
 
 ---
 
