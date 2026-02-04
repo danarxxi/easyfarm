@@ -134,17 +134,17 @@ EasyFarm은 Arduino 센서 모듈과 Android 모바일 앱을 연동하여 **실
 
 ### 식물 정보 차트
 <p align="center">
-  <img src="EasyFarm_Android/res/drawable/info_chart.jpg" width="300" alt="식물 온습도 차트"/>
+  <img src="EasyFarm_Android/res/drawable-v24/info_chart.jpg" width="300" alt="식물 온습도 차트"/>
 </p>
 
 ### 계절별 습도 정보
 <p align="center">
-  <img src="EasyFarm_Android/res/drawable/info_plant.jpg" width="300" alt="계절별 습도"/>
+  <img src="EasyFarm_Android/res/drawable-v24/info_plant.jpg" width="300" alt="계절별 습도"/>
 </p>
 
 ### 식물별 적정 습도
 <p align="center">
-  <img src="EasyFarm_Android/res/drawable/info_hum.jpg" width="300" alt="식물별 적정습도"/>
+  <img src="EasyFarm_Android/res/drawable-v24/info_hum.jpg" width="300" alt="식물별 적정습도"/>
 </p>
 
 ---
