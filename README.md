@@ -104,13 +104,17 @@ easyfarm-web/
 
 ### 스크린샷
 
-| 대시보드 | 식물 목록 |
-|:---:|:---:|
-| ![대시보드](docs/images/easyfarm_대시보드.png) | ![식물목록](docs/images/easyfarm_식물목록.png) |
+**대시보드**
+![대시보드](docs/images/easyfarm_대시보드.png)
 
-| 식물 상세 | 알림 로그 |
-|:---:|:---:|
-| ![식물상세](docs/images/easyfarm_식물상세.png) | ![알림로그](docs/images/easyfarm_알림로그.png) |
+**식물 목록**
+![식물목록](docs/images/easyfarm_식물목록.png)
+
+**식물 상세**
+![식물상세](docs/images/easyfarm_식물상세.png)
+
+**알림 로그**
+![알림로그](docs/images/easyfarm_알림로그.png)
 
 ### 주요 기능
 
