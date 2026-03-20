@@ -7,8 +7,9 @@ import QueryProvider from '@/components/ui/QueryProvider'
 const geist = Geist({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'EasyFarm — 식물 운영 관리 시스템',
+  title: 'EasyFarm - 식물 운영 관리 시스템',
   description: 'IoT 기반 식물 모니터링 및 자동 제어 어드민 시스템',
+  icons: { icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"><text y="32" font-size="32">🌱</text></svg>' },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
