@@ -1,7 +1,7 @@
 'use client'
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { use, useState } from 'react'
+import { use, useState, useCallback } from 'react'
 import Link from 'next/link'
 import { Plant, SensorData } from '@/types'
 import {
@@ -25,6 +25,24 @@ export default function PlantDetailPage({ params }: { params: Promise<{ id: stri
   const { id } = use(params)
   const queryClient = useQueryClient()
   const [savedHumidity, setSavedHumidity] = useState<number | null>(null)
+  const [aiAdvice, setAiAdvice] = useState<string | null>(null)
+  const [aiLoading, setAiLoading] = useState(false)
+
+  const fetchAiAdvice = useCallback(async (plantData: Plant) => {
+    setAiLoading(true)
+    setAiAdvice(null)
+    try {
+      const res = await fetch('/api/ai/care-advice', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ plant: plantData }),
+      })
+      const data = await res.json()
+      setAiAdvice(data.advice ?? data.error)
+    } finally {
+      setAiLoading(false)
+    }
+  }, [])
 
   const { data: plant, isLoading } = useQuery<Plant>({
     queryKey: ['plant', id],
@@ -147,6 +165,40 @@ export default function PlantDetailPage({ params }: { params: Promise<{ id: stri
             {savedHumidity && <span className="text-green-500 ml-1">· {savedHumidity}%로 저장됨</span>}
           </p>
         </div>
+      </div>
+
+      {/* AI 케어 어드바이저 */}
+      <div className="bg-white rounded-xl border border-gray-100 p-6">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h3 className="text-sm font-semibold text-gray-700">AI 케어 어드바이저</h3>
+            <p className="text-xs text-gray-400 mt-0.5">현재 센서 데이터를 기반으로 케어 방법을 추천해드립니다</p>
+          </div>
+          <button
+            onClick={() => fetchAiAdvice(plant)}
+            disabled={aiLoading}
+            className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700 disabled:opacity-50 transition-colors"
+          >
+            {aiLoading ? (
+              <>
+                <span className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                분석 중...
+              </>
+            ) : (
+              <>✨ AI 분석</>
+            )}
+          </button>
+        </div>
+
+        {aiAdvice ? (
+          <div className="bg-green-50 rounded-lg p-4 text-sm text-gray-700 leading-relaxed whitespace-pre-line">
+            {aiAdvice}
+          </div>
+        ) : (
+          <div className="bg-gray-50 rounded-lg p-4 text-sm text-gray-400 text-center">
+            버튼을 눌러 현재 상태에 맞는 케어 방법을 확인하세요
+          </div>
+        )}
       </div>
 
       {/* 센서 히스토리 차트 */}

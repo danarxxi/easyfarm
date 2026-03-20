@@ -1,6 +1,7 @@
 'use client'
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useState } from 'react'
 import Link from 'next/link'
 import { fetchDashboardStats, fetchPlants, fetchAlerts, runSimulation } from '@/lib/api'
 import StatusBadge from '@/components/ui/StatusBadge'
@@ -8,6 +9,8 @@ import { AlertLog, Plant, DashboardStats } from '@/types'
 
 export default function DashboardPage() {
   const queryClient = useQueryClient()
+  const [aiReport, setAiReport] = useState<string | null>(null)
+  const [aiLoading, setAiLoading] = useState(false)
 
   const { data: stats } = useQuery<DashboardStats>({
     queryKey: ['dashboard-stats'],
@@ -38,6 +41,23 @@ export default function DashboardPage() {
 
   const unresolvedAlerts = alerts?.filter((a) => !a.resolved) ?? []
 
+  async function fetchAiReport() {
+    if (!stats || !plants || !alerts) return
+    setAiLoading(true)
+    setAiReport(null)
+    try {
+      const res = await fetch('/api/ai/report', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ stats, plants, alerts }),
+      })
+      const data = await res.json()
+      setAiReport(data.report ?? data.error)
+    } finally {
+      setAiLoading(false)
+    }
+  }
+
   return (
     <div className="p-8 space-y-8">
       {/* 헤더 */}
@@ -46,13 +66,29 @@ export default function DashboardPage() {
           <h2 className="text-2xl font-bold text-gray-800">대시보드</h2>
           <p className="text-sm text-gray-500 mt-1">전체 식물 운영 현황을 한눈에 확인하세요.</p>
         </div>
-        <button
-          onClick={() => simulateMutation.mutate()}
-          disabled={simulateMutation.isPending}
-          className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700 disabled:opacity-50 transition-colors"
-        >
-          {simulateMutation.isPending ? '실행 중...' : '센서 업데이트'}
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={fetchAiReport}
+            disabled={aiLoading || !stats || !plants}
+            className="flex items-center gap-2 px-4 py-2 bg-violet-600 text-white text-sm rounded-lg hover:bg-violet-700 disabled:opacity-50 transition-colors"
+          >
+            {aiLoading ? (
+              <>
+                <span className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                분석 중...
+              </>
+            ) : (
+              <>✨ AI 운영 리포트</>
+            )}
+          </button>
+          <button
+            onClick={() => simulateMutation.mutate()}
+            disabled={simulateMutation.isPending}
+            className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700 disabled:opacity-50 transition-colors"
+          >
+            {simulateMutation.isPending ? '실행 중...' : '센서 업데이트'}
+          </button>
+        </div>
       </div>
 
       {/* 통계 카드 */}
@@ -67,6 +103,24 @@ export default function DashboardPage() {
         <StatCard label="오늘 자동 급수" value={`${stats?.todayWateringCount ?? '-'}회`} icon="💧" color="bg-cyan-50 text-cyan-600" />
         <StatCard label="현재 LED 가동" value={`${stats?.activeLedCount ?? '-'}개`} icon="💡" color="bg-amber-50 text-amber-600" />
       </div>
+
+      {/* AI 운영 리포트 */}
+      {(aiReport || aiLoading) && (
+        <div className="bg-white rounded-xl border border-violet-200 p-6">
+          <div className="flex items-center gap-2 mb-3">
+            <span className="text-violet-600">✨</span>
+            <h3 className="text-sm font-semibold text-gray-700">AI 운영 리포트</h3>
+            <span className="text-xs text-gray-400 ml-1">방금 생성됨</span>
+          </div>
+          {aiLoading ? (
+            <div className="text-sm text-gray-400">분석 중...</div>
+          ) : (
+            <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-line bg-violet-50 rounded-lg p-4">
+              {aiReport}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* 미해결 알림 */}
       {unresolvedAlerts.length > 0 && (
